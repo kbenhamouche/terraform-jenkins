@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    triggers {
+     githubPush()
+    }
+
     stages {
         stage ("1. Tf Init") {
             steps {
