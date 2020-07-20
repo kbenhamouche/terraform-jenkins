@@ -4,7 +4,7 @@ pipeline {
         stage ("1. Tf Init") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                    sh "terraform init -var 'nsx_username='$user' -var 'nsx_password='$pass' "
+                    sh "terraform init -var 'nsx_username='$user' -var 'nsx_password='$pass'"
                 }
             }
         }
