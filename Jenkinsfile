@@ -20,9 +20,9 @@ pipeline {
             steps {
 		sh "terraform init"
 		sh "terraform plan"
-                }
             }
         }
+        
         
 	stage ("2. tf Apply") {
 		steps {
