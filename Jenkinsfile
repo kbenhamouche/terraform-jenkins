@@ -20,7 +20,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 		sh "terraform init -var 'nsx_username='$user' -var 'nsx_password='$pass'"
-		sh "terraform plan"
 		sh "terraform apply -auto-approve"
                 }
             }
