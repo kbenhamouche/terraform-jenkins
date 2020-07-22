@@ -1,10 +1,10 @@
 
 variable "nsx_server" {
-  description = "NSX-T Manager fqdn or ip"
+  description = "NSX-T FQDN or IP"
 }
 
 variable "nsx_username" {
-  description = "NSX user"
+  description = "NSX username"
 }
 
 variable "nsx_password" {
