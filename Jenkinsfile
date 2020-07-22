@@ -51,7 +51,7 @@ pipeline {
 	stage ("5. Tf destroy") {
             steps {
 			script {
-				sh "terraform destroy -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
+				sh "terraform destroy -auto-approve -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
 			}
             }
 	}
