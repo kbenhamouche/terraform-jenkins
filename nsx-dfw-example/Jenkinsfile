@@ -1,29 +1,59 @@
 pipeline {
     agent any
+    
+    environment {
+     NSX_CRED = credentials('nsx_credentials')
+    }
+    
+    triggers {
+     githubPush()
+    }
+
     stages {
-        stage ("1. Terraform Init") {
+	stage(" -- Set Terraform path --") {
+ 	  steps {
+ 	    script {
+		def tfHome = tool name: 'Terraform'
+ 		env.PATH = "${tfHome}:${env.PATH}"
+ 	    }
+ 	    sh 'terraform -version'
+	  }
+	}
+
+        stage ("1. Tf Init") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                    sh '''
-                        terraform init -var 'nsx_username='$user' -var 'nsx_password='$pass'
-                        '''
-                }
+		sh "terraform init"
             }
         }
-        stage ("2. Terraform Plan") {
+        
+	stage ("2. Tf Plan and Apply") {
+		steps {
+			script {
+				 sh "terraform plan -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
+				 sh "terraform apply -auto-approve -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
+                		
+			}
+		}
+	}
+	
+	stage ("3. Tf Show") {
             steps {
-                sh terraform plan
+                sh "terraform show"
             }
         }
-        stage ("3. Terraform Apply") {
+
+	stage ("4. run Tf destroy?") {
             steps {
-                sh terraform apply -auto-approve
+                input 'do you want to destroy the setup?'
             }
         }
-         stage ("4. Terraform Show") {
+
+	stage ("5. Tf destroy") {
             steps {
-                sh terraform show
+			script {
+				sh "terraform destroy -force -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
+			}
             }
-        }
+	}
     }
 }
