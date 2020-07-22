@@ -23,11 +23,13 @@ pipeline {
         }
         
 	stage ("credentials") {
-        	script {
+            step {
+		script {
 		withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', usernameVariable: 'username', passwordVariable: 'password')]) {
 		 print 'username=' + username + 'password=' + password	
 		}
 		}
+	   }
 	}
 	stage ("2. tf Apply") {
 		steps {
