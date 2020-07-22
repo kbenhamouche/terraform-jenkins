@@ -5,7 +5,7 @@
 
 # All WEB VMs
 resource "nsxt_policy_group" "uag_horizon" {
-  display_name = "Terraform - UAG_Horizon_VMs"
+  display_name = "UAG_Horizon_VMs"
   description  = "Group consisting of Horizon VMs"
   criteria {
     condition {
@@ -66,7 +66,7 @@ data "nsxt_policy_service" "ssh" {
 # Gropus we created earlier
 #
 resource "nsxt_policy_security_policy" "firewall_section" {
-  display_name = "Horizon Section"
+  display_name = "Horizon Section by Terraform"
   description  = "Firewall section created by Terraform"
   scope        = [nsxt_policy_group.uag_horizon.path]
   category     = "Application"
