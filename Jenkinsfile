@@ -47,8 +47,12 @@ pipeline {
 
 	stage ("5. Tf destroy") {
             steps {
-                sh "terraform destroy -force"
+			script {
+				withCredentials([usernamePassword(credentialsId: 'nsx_credentials', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
+				sh "terraform destroy -force -var 'nsx_username=$USER' -var 'nsx_password=$PWD'"
+            			}
+			}
             }
-        }
+	}
     }
 }
