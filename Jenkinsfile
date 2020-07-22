@@ -38,5 +38,17 @@ pipeline {
                 sh "terraform show"
             }
         }
+
+	stage ("4. run Tf destroy?") {
+            steps {
+                input 'do you want to destroy the setup?'
+            }
+        }
+
+	stage ("5. Tf destroy") {
+            steps {
+                sh "terraform destroy -force"
+            }
+        }
     }
 }
