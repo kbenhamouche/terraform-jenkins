@@ -26,7 +26,8 @@ pipeline {
             steps {
 		script {
 		withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', usernameVariable: 'username', passwordVariable: 'password')]) {
-		 print 'username=' + username + 'password=' + password	
+		 echo 'username= $username'
+		 echo 'password= $password'	
 		}
 		}
 	   }
