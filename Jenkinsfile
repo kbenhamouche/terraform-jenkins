@@ -19,7 +19,6 @@ pipeline {
         stage ("1. Tf Init and Plan") {
             steps {
 		sh "terraform init"
-		sh "terraform plan"
             }
         }
         
@@ -27,7 +26,10 @@ pipeline {
 	stage ("2. tf Apply") {
 		steps {
 			withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                		sh "terraform apply -auto-approve -var 'nsx_username='$user' -var 'nsx_password='$pass'"
+                		sh 'echo $user'
+				sh 'echo $pass'
+				sh "terraform plan -var 'nsx_username='$user' -var 'nsx_password='$pass'"
+				sh "terraform apply -auto-approve -var 'nsx_username='$user' -var 'nsx_password='$pass'"
                 	}
 		}
 	}
