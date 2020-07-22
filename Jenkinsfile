@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    
+    environment {
+     NSX-CRED = credentials('nsx_credentials')
+    }
+    
     triggers {
      githubPush()
     }
@@ -25,9 +29,8 @@ pipeline {
 	stage ("2. Tf Plan and Apply") {
 		steps {
 			script {
-				withCredentials([usernamePassword(credentialsId: 'nsx_credentials', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
-				 sh "terraform plan -var 'nsx_username=$USER' -var 'nsx_password=$PWD'"
-				 sh "terraform apply -auto-approve -var 'nsx_username=$USER' -var 'nsx_password=$PWD'"
+				 sh "terraform plan -var 'nsx_username=$NSX-CRED_USR' -var 'nsx_password=$NSX-CRED_PSW'"
+				 sh "terraform apply -auto-approve -var 'nsx_username=$NSX-CRED_USR' -var 'nsx_password=$NSX-CRED_PSW'"
                 		}
 			}
 		}
