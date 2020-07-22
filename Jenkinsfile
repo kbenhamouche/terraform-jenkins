@@ -25,7 +25,7 @@ pipeline {
 	stage ("credentials") {
             steps {
 		script {
-		withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', usernameVariable: 'username', passwordVariable: 'password')]) {
+		withCredentials([usernamePassword(credentialsId: 'nsx_credentials', usernameVariable: 'username', passwordVariable: 'password')]) {
 		 sh 'echo username= $username'
 		 sh 'echo password= $password'	
 		}
@@ -35,7 +35,7 @@ pipeline {
 	stage ("2. tf Apply") {
 		steps {
 			script {
-				withCredentials([usernamePassword(credentialsId: 'NSX_Credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
+				withCredentials([usernamePassword(credentialsId: 'nsx_credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
                 		 sh 'echo $user'
 				 sh 'echo $pass'
 				 sh "terraform plan -var 'nsx_username='$user' -var 'nsx_password='$pass'"
