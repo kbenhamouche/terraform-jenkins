@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-     nsx_credentials = credentials('nsx_credentials')
+     NSX_CRED = credentials('nsx_credentials')
     }
     
     triggers {
@@ -29,8 +29,8 @@ pipeline {
 	stage ("2. Tf Plan and Apply") {
 		steps {
 			script {
-				 sh "terraform plan -var 'nsx_username=$nsx_credentials_USR' -var 'nsx_password=$nsx_credentials_PSW'"
-				 sh "terraform apply -auto-approve -var 'nsx_username=$nsx_credentials_USR' -var 'nsx_password=$nsx_credentials_PSW'"
+				 sh "terraform plan -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
+				 sh "terraform apply -auto-approve -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
                 		
 			}
 		}
@@ -51,9 +51,7 @@ pipeline {
 	stage ("5. Tf destroy") {
             steps {
 			script {
-				withCredentials([usernamePassword(credentialsId: 'nsx_credentials', passwordVariable: 'PWD', usernameVariable: 'USER')]) {
-				sh "terraform destroy -force -var 'nsx_username=$USER' -var 'nsx_password=$PWD'"
-            			}
+				sh "terraform destroy -force -var 'nsx_username=$NSX_CRED_USR' -var 'nsx_password=$NSX_CRED_PSW'"
 			}
             }
 	}
