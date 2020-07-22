@@ -31,7 +31,7 @@ pipeline {
 			script {
 				 sh "terraform plan -var 'nsx_username=$NSX-CRED_USR' -var 'nsx_password=$NSX-CRED_PSW'"
 				 sh "terraform apply -auto-approve -var 'nsx_username=$NSX-CRED_USR' -var 'nsx_password=$NSX-CRED_PSW'"
-                		}
+                		
 			}
 		}
 	}
